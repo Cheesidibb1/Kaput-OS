@@ -7,3 +7,11 @@ objects = loader.o kernel.o
 %.o: %.cpp
 	g++ $(GPPPARAMS) -o $@ -c $<
 
+%.o: %.s
+	as $(ASPARAMS) -o $@ $<
+
+mykernel.bin: linker.ld $(objects)
+	ld $(LPDARAMS) -T $< -o $@ $(objects)
+
+install: mykernel.bin
+	sudo cp $< /boot/mykernel.bin
