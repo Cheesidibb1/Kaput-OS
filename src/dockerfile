@@ -1,0 +1,17 @@
+FROM ubuntu:latest
+
+RUN apt update
+RUN apt upgrade
+RUN apt install -y qemu qemu-kvm
+RUN apt install -y nasm
+RUN apt install -y grub-pc-bin
+RUN apt install -y xorriso
+RUN apt install -y gcc
+
+WORKDIR /root/env
+VOLUME /root/env
+
+RUN nasm -f bin -o boot.bin boot.asm
+
+CMD ["qemu-system-x86_64", "-drive", "file=boot.bin,format=raw", "-boot", "c"]
+
